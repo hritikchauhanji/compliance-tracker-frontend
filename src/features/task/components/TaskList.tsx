@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTasksByClient } from "../api/task.api";
+import AddTaskForm from "./AddTaskForm";
 
 export default function TaskList({ clientId }: any) {
   const [tasks, setTasks] = useState<any[]>([]);
@@ -30,7 +31,7 @@ export default function TaskList({ clientId }: any) {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-11/12">
       {/* Stats */}
       {stats && (
         <div className="grid grid-cols-4 gap-4 mb-4">
@@ -57,7 +58,7 @@ export default function TaskList({ clientId }: any) {
       )}
 
       {/* Scrollable Tasks */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-4">
         {loading ? (
           <div className="text-center">Loading tasks...</div>
         ) : tasks.length === 0 ? (
