@@ -47,6 +47,12 @@ export default function ClientList({ onSelect }: any) {
         <Input
           placeholder="Search client..."
           value={search}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setPage(1);
+              fetchClients({ page: 1 });
+            }
+          }}
           onChange={(e) => {
             const value = e.target.value;
             setSearch(value);
