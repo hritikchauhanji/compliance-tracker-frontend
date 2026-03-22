@@ -13,5 +13,10 @@ export const getClients = async (query: Query) => {
     params: query,
   });
 
-  return res.data; // return full response
+  return res.data;
+};
+
+export const createClient = async (data: any) => {
+  const res = await api.post("/client", data);
+  return res.data;
 };

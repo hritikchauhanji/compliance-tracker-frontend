@@ -4,10 +4,22 @@ import { getClients } from "../api/client.api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function ClientList({ onSelect }: any) {
   const [clients, setClients] = useState<any[]>([]);
   const [search, setSearch] = useState("");
+
+  const [sortBy, setSortBy] = useState<"company_name" | "created_at">(
+    "company_name",
+  );
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -16,7 +28,7 @@ export default function ClientList({ onSelect }: any) {
 
   useEffect(() => {
     fetchClients();
-  }, [page]);
+  }, [page, sortBy, order]);
 
   const fetchClients = async (query = {}) => {
     setLoading(true);
@@ -26,8 +38,8 @@ export default function ClientList({ onSelect }: any) {
         search,
         page,
         limit: 10,
-        sortBy: "company_name",
-        order: "asc",
+        sortBy,
+        order,
         ...query,
       });
 
@@ -72,6 +84,38 @@ export default function ClientList({ onSelect }: any) {
         >
           Search
         </Button>
+      </div>
+
+      <div className="flex justify-between gap-1 mb-2">
+        <Select
+          onValueChange={(value: any) => {
+            setSortBy(value);
+            setPage(1);
+          }}
+        >
+          <SelectTrigger className="w-40">
+            <SelectValue placeholder="Sort By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="company_name">Company Name</SelectItem>
+            <SelectItem value="created_at">Created At</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select
+          onValueChange={(value: any) => {
+            setOrder(value);
+            setPage(1);
+          }}
+        >
+          <SelectTrigger className="w-40">
+            <SelectValue placeholder="Order" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="asc">Ascending</SelectItem>
+            <SelectItem value="desc">Descending</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Scrollable List */}
